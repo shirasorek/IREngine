@@ -46,10 +46,12 @@ with open(Path("general") / f'DL_dict_body.pickle', 'rb') as f: #returns len of 
 
 with open(Path("general") / f'DL_dict_title.pickle', 'rb') as f: #returns len of docs in corpus
     DL_title = pickle.load(f)
-
+"""
 with open(Path("general") / f'doc_nf.pickle', 'rb') as f: #returns norm of docs in corpus
     NF = pickle.load(f)
-
+"""
+with open(Path("general") / f'docs_tfidf.pickle', 'rb') as f: #returns norm of docs in corpus
+    NF = pickle.load(f)
 with open(Path("general") / f'page_view_stats.pickle', 'rb') as f: #returns page rank results
     pv = pickle.load(f)
 
@@ -128,15 +130,12 @@ def cosine_similarity_upgraded(index,
                 res[post[0]] = query_vector[tok_query.index(term)] * normlized_tfidf
 
     # normalizing query
-    sum=0
-    for tfidf in query_vector:  # power of 2
-        sum += tfidf ** 2
-    norm_q =  1 / math.sqrt(sum)
+    norm_q = math.sqrt(sum([val ** 2 for val in query_vector]))
 
     # normalizing all sim with norm_q and norm_d
     for doc in res.keys():
-        norm_d = 1/NF[doc]
-        res[doc] = res[doc] * norm_q * norm_d
+        norm_d = NF[doc]
+        res[doc] = res[doc]/( norm_q * norm_d)
 
     return res
 
