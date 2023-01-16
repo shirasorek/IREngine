@@ -191,7 +191,7 @@ def search():
     # BEGIN SOLUTION
     title_scores= search_title_BM25(query)
     body_scores= search_body_BM25(query)
-    res_temp= merge_results(title_scores, body_scores, 0.3, 0.7, 100)
+    res_temp= merge_results(title_scores, body_scores, 0.45, 0.55, 100)
     ids = []
     # create list of IDs
     for i in range(len(res_temp)):
@@ -204,7 +204,7 @@ def search():
     norm_pv = min_max_normalization(pv, res_temp[-1][1], res_temp[0][1])
     # creating final score for each doc with title, body, PR & PV scores
     for i in range(len(res_temp)):
-        res_temp[i] = (res_temp[i][0], res_temp[i][1]*0.55+norm_pr[i]*0.35+norm_pv[i]*0.1)
+        res_temp[i] = (res_temp[i][0], res_temp[i][1]*0.5+norm_pr[i]*0.3+norm_pv[i]*0.2)
     res = sorted(res_temp,key=lambda x: x[1], reverse=True)[:100]
     final_res=[]
     #get title of each ID
